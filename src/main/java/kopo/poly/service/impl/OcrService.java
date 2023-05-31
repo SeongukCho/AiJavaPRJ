@@ -9,7 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service
+@Service // 메모리 한번만  생성, 메모리 효율이 좋다
 public class OcrService implements IOcrService {
     @Override
     public OcrDTO getReadforImagetext(OcrDTO pDTO) throws Exception {
