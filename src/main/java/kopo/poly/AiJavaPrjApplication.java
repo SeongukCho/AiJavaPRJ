@@ -32,7 +32,6 @@ public class AiJavaPrjApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        log.info("자바 프로그래밍 시작!!");
 
 //        String filePath = "image"; // 문자열을 인식할 이미지 파일 경로
 //        String fileName = "sample01.png"; // 문자열을 인식할 이미지 파일 이름
@@ -81,9 +80,12 @@ public class AiJavaPrjApplication implements CommandLineRunner {
 //
 //        log.info("가장 많이 사용된 단어는? : " + sortResult);
 
+        log.info("자바 프로그래밍 시작!!");
+
         StudentDTO pDTO;
         List<StudentDTO> rList;
 
+        // 학생 등록하기
         pDTO = new StudentDTO();
 
         pDTO.setUserId("hglee67");
@@ -92,6 +94,34 @@ public class AiJavaPrjApplication implements CommandLineRunner {
         pDTO.setAddr("서울");
 
         rList = studentService.insertStudent(pDTO);
+
+        rList.forEach(dto -> {
+            log.info("DB에 저장된 아이디 : " + dto.getUserId());
+            log.info("DB에 저장된 이름 : " + dto.getUserName());
+            log.info("DB에 저장된 이메일 : " + dto.getEmail());
+            log.info("DB에 저장된 주소 : " + dto.getAddr());
+        });
+
+        pDTO = new StudentDTO();
+
+        pDTO.setUserId("hglee67");
+        pDTO.setUserName("이협건_수정");
+        pDTO.setEmail("hglee67@kopo.ac.kr_수정");
+        pDTO.setAddr("서울_수정");
+
+        rList = studentService.updateStudent(pDTO);
+
+        rList.forEach(dto -> {
+            log.info("DB에 저장된 아이디 : " + dto.getUserId());
+            log.info("DB에 저장된 이름 : " + dto.getUserName());
+            log.info("DB에 저장된 이메일 : " + dto.getEmail());
+            log.info("DB에 저장된 주소 : " + dto.getAddr());
+        });
+        pDTO = new StudentDTO();
+
+        pDTO.setUserId("hglee67");
+
+        rList = studentService.deleteStudent(pDTO);
 
         rList.forEach(dto -> {
             log.info("DB에 저장된 아이디 : " + dto.getUserId());
