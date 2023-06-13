@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class StudentService implements IStudentService {
 
-    private final IStudentMapper studentMapper;
+    private final IStudentMapper studentMapper; // 오라클 DB와 연결된 Mapper
 
     @Override
     public List<StudentDTO> insertStudent(StudentDTO pDTO) throws Exception {
