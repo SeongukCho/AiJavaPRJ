@@ -117,6 +117,7 @@ public class AiJavaPrjApplication implements CommandLineRunner {
             log.info("DB에 저장된 이메일 : " + dto.getEmail());
             log.info("DB에 저장된 주소 : " + dto.getAddr());
         });
+
         pDTO = new StudentDTO();
 
         pDTO.setUserId("hglee67");
