@@ -41,27 +41,22 @@ public class StudentService implements IStudentService {
     }
 
     @Override
-    public List<StudentDTO> updateStudent(StudentDTO pDTO) throws Exception {
-        log.info(this.getClass().getName() + ".updateStudent Start!");
+    public void insertStudentList(List<StudentDTO> pList) throws Exception {
+        log.info(this.getClass().getName() + ".insertStudentList Start!");
 
-        Optional<StudentDTO> res = Optional.ofNullable(studentMapper.getStudent(pDTO));
+        pList.forEach(dto -> {
+            try {
+                this.insertStudent(dto);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
-        if (res.isPresent()) {
-            studentMapper.updateStudent(pDTO);
-            log.info(pDTO.getUserId() + "님이 수정되었습니다.");
-        } else {
-            log.info("회원이 존재하지 않아 수정되지 못했습니다.");
-        }
-
-        List<StudentDTO> rList = Optional.ofNullable(studentMapper.getStudentList()).orElseGet(ArrayList::new);
-
-        log.info(this.getClass().getName() + ".updateStudent End!");
-
-        return rList;
+        log.info(this.getClass().getName() + ".insertStudentList End!");
     }
 
     @Override
-    public List<StudentDTO> deleteStudent(StudentDTO pDTO) throws Exception {
+    public void deleteStudent(StudentDTO pDTO) throws Exception {
         log.info(this.getClass().getName() + ".deleteStudent Start!");
 
         Optional<StudentDTO> res = Optional.ofNullable(studentMapper.getStudent(pDTO));
@@ -73,12 +68,60 @@ public class StudentService implements IStudentService {
             log.info("회원이 존재하지 않아 삭제하지 못했습니다.");
         }
 
-        List<StudentDTO> rList = Optional.ofNullable(studentMapper.getStudentList()).orElseGet(ArrayList::new);
-
         log.info(this.getClass().getName() + ".deleteStudent End!");
-
-        return rList;
     }
 
+    @Override
+    public void deleteStudentList(List<StudentDTO> pList) throws Exception {
+        log.info(this.getClass().getName() + ".deleteStudentList Start!");
 
+        pList.forEach(dto -> {
+            try {
+                this.deleteStudent(dto);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        log.info(this.getClass().getName() + ".deleteStudentList End!");
+    }
+
+    @Override
+    public void updateStudent(StudentDTO pDTO) throws Exception {
+        log.info(this.getClass().getName() + ".updateStudent Start!");
+
+        Optional<StudentDTO> res = Optional.ofNullable(studentMapper.getStudent(pDTO));
+
+        if (res.isPresent()) {
+            studentMapper.updateStudent(pDTO);
+            log.info(pDTO.getUserId() + "님이 수정되었습니다.");
+        } else {
+            log.info("회원이 존재하지 않아 수정되지 못했습니다.");
+        }
+
+        log.info(this.getClass().getName() + ".updateStudent End!");
+    }
+
+    @Override
+    public void updateStudentList(List<StudentDTO> pList) throws Exception {
+        log.info(this.getClass().getName() + ".updateStudentList Start!");
+
+        pList.forEach(dto -> {
+            try {
+                this.updateStudent(dto);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        log.info(this.getClass().getName() + ".updateStudentList End!");
+    }
+
+    @Override
+    public List<StudentDTO> getStudentList() throws Exception {
+        List<StudentDTO> rList = Optional.ofNullable(
+                studentMapper.getStudentList()
+        ).orElseGet(ArrayList::new);
+        return rList;
+    }
 }

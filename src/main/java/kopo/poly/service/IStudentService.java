@@ -13,6 +13,12 @@ public interface IStudentService {
      * @return DB 조회한 학생 정보
      */
     List<StudentDTO> insertStudent(StudentDTO pDTO) throws Exception;
-    List<StudentDTO> updateStudent(StudentDTO pDTO) throws Exception;
-    List<StudentDTO> deleteStudent(StudentDTO pDTO) throws Exception;
+    void insertStudentList(List<StudentDTO> pList) throws Exception;
+    void updateStudent(StudentDTO pDTO) throws Exception;
+
+    void updateStudentList(List<StudentDTO> pList) throws Exception;
+    void deleteStudent(StudentDTO pDTO) throws Exception;
+    void deleteStudentList(List<StudentDTO> pList) throws Exception;
+
+    List<StudentDTO> getStudentList() throws Exception;
 }

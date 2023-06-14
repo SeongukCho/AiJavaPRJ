@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -31,7 +32,6 @@ public class AiJavaPrjApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
 
 //        String filePath = "image"; // 문자열을 인식할 이미지 파일 경로
 //        String fileName = "sample01.png"; // 문자열을 인식할 이미지 파일 이름
@@ -79,58 +79,140 @@ public class AiJavaPrjApplication implements CommandLineRunner {
 //        Collections.sort(sortResult, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
 //
 //        log.info("가장 많이 사용된 단어는? : " + sortResult);
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         log.info("자바 프로그래밍 시작!!");
 
-        StudentDTO pDTO;
-        List<StudentDTO> rList;
+        StudentDTO pDTO;    // 학생 등록,수정,삭제에 활용될 DTO
+        List<StudentDTO> rList; //DB조회 결과를 표현
 
-        // 학생 등록하기
-        pDTO = new StudentDTO();
+//        // 학생 등록하기
+//        pDTO = new StudentDTO();
+//
+//        pDTO.setUserId("hglee67");
+//        pDTO.setUserName("이협건");
+//        pDTO.setEmail("hglee67@kopo.ac.kr");
+//        pDTO.setAddr("서울");
+//
+//        rList = studentService.insertStudent(pDTO);
+//
+//        loggingInfo(rList);
+//
+//        // 수정하기
+//        pDTO = new StudentDTO();
+//
+//        pDTO.setUserId("hglee67");
+//        pDTO.setUserName("이협건_수정");
+//        pDTO.setEmail("hglee67@kopo.ac.kr_수정");
+//        pDTO.setAddr("서울_수정");
+//
+//        studentService.updateStudent(pDTO);
+//
+//        rList = studentService.getStudentList();
+//
+//        loggingInfo(rList);
+//
+//        rList = studentService.getStudentList();
+//
+//        rList.forEach(dto -> {
+//            try {
+//                studentService.deleteStudent(dto);
+//            } catch (Exception e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
+//
+//        rList = studentService.getStudentList();
 
-        pDTO.setUserId("hglee67");
-        pDTO.setUserName("이협건");
-        pDTO.setEmail("hglee67@kopo.ac.kr");
-        pDTO.setAddr("서울");
+//        pDTO = new StudentDTO();
+//
+//        pDTO.setUserId("hglee67");
+//
+//        rList = studentService.deleteStudent(pDTO);
+//
+//        rList.forEach(dto -> {
+//            log.info("DB에 저장된 아이디 : " + dto.getUserId());
+//            log.info("DB에 저장된 이름 : " + dto.getUserName());
+//            log.info("DB에 저장된 이메일 : " + dto.getEmail());
+//            log.info("DB에 저장된 주소 : " + dto.getAddr());
+//        });
 
-        rList = studentService.insertStudent(pDTO);
+        List<StudentDTO> pList = new ArrayList<>();
 
-        rList.forEach(dto -> {
-            log.info("DB에 저장된 아이디 : " + dto.getUserId());
-            log.info("DB에 저장된 이름 : " + dto.getUserName());
-            log.info("DB에 저장된 이메일 : " + dto.getEmail());
-            log.info("DB에 저장된 주소 : " + dto.getAddr());
+        for (int i = 0; i < 5; i++) {
+            StudentDTO allDTO = new StudentDTO();
+
+            allDTO.setUserId("id" + (i + 1));
+            allDTO.setUserName("name" + (i + 1));
+            allDTO.setEmail("email" + (i + 1));
+            allDTO.setAddr("addr" + (i + 1));
+
+            pList.add(allDTO);
+
+            pDTO = null;
+        }
+
+        pList.parallelStream().forEach(dto -> {
+            try {
+                studentService.insertStudent(dto);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
 
-        pDTO = new StudentDTO();
+        rList = studentService.getStudentList();
 
-        pDTO.setUserId("hglee67");
-        pDTO.setUserName("이협건_수정");
-        pDTO.setEmail("hglee67@kopo.ac.kr_수정");
-        pDTO.setAddr("서울_수정");
+        loggingInfo(rList);
 
-        rList = studentService.updateStudent(pDTO);
+        rList = studentService.getStudentList();
 
         rList.forEach(dto -> {
-            log.info("DB에 저장된 아이디 : " + dto.getUserId());
-            log.info("DB에 저장된 이름 : " + dto.getUserName());
-            log.info("DB에 저장된 이메일 : " + dto.getEmail());
-            log.info("DB에 저장된 주소 : " + dto.getAddr());
+            try {
+                studentService.deleteStudent(dto);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
 
-        pDTO = new StudentDTO();
+        pList = new ArrayList<>();
 
-        pDTO.setUserId("hglee67");
+        for (int i = 0; i < 5; i++) {
+            StudentDTO myDTO = new StudentDTO();
 
-        rList = studentService.deleteStudent(pDTO);
+            myDTO.setUserId("id" + (i+1));
+            myDTO.setUserName("name" + (i+1));
+            myDTO.setEmail("email" + (i+1));
+            myDTO.setAddr("addr" + (i+1));
 
-        rList.forEach(dto -> {
-            log.info("DB에 저장된 아이디 : " + dto.getUserId());
-            log.info("DB에 저장된 이름 : " + dto.getUserName());
-            log.info("DB에 저장된 이메일 : " + dto.getEmail());
-            log.info("DB에 저장된 주소 : " + dto.getAddr());
-        });
+            pList.add(myDTO);
+
+            myDTO = null;
+        }
+
+        rList = studentService.getStudentList();
+        loggingInfo(rList);
+
+        studentService.insertStudentList(pList);
+        rList = studentService.getStudentList();
+        loggingInfo(rList);
+
+        studentService.updateStudentList(pList);
+        rList = studentService.getStudentList();
+        loggingInfo(rList);
+
+        studentService.deleteStudentList(pList);
+        rList = studentService.getStudentList();
+        loggingInfo(rList);
+
 
         log.info("자바 프로그래밍 종료!!");
+    }
+
+    static void loggingInfo(List<StudentDTO> pList) {
+        pList.forEach(dto -> {
+            log.info("DB에 저장된 아이디 : " + dto.getUserId());
+            log.info("DB에 저장된 이름 : " + dto.getUserName());
+            log.info("DB에 저장된 이메일 : " + dto.getEmail());
+            log.info("DB에 저장된 주소 : " + dto.getAddr());
+        });
     }
 }
